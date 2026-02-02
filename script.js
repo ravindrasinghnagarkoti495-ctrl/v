@@ -81,18 +81,23 @@ function handleNoButtonEvasion(e) {
         const cardRect = card.getBoundingClientRect();
         const btnRect = noBtn.getBoundingClientRect();
 
-        // Calculate safe boundaries within the card (with padding)
-        const padding = 40;
-        const maxX = cardRect.width - btnRect.width - padding;
-        const maxY = cardRect.height - btnRect.height - padding;
+        // Calculate safe boundaries within the card (with conservative padding for mobile)
+        const padding = 60; // Increased padding to keep button well inside
+        const maxX = (cardRect.width - btnRect.width - (padding * 2)) / 2;
+        const maxY = (cardRect.height - btnRect.height - (padding * 2)) / 2;
 
-        // Generate random position within card
-        const randomX = (Math.random() * maxX) - (maxX / 2);
-        const randomY = (Math.random() * maxY) - (maxY / 2);
+        // Generate random position within safe boundaries
+        // Using smaller range to ensure button stays visible
+        const randomX = (Math.random() * maxX * 2) - maxX;
+        const randomY = (Math.random() * maxY * 2) - maxY;
+
+        // Clamp values to ensure they're within bounds
+        const clampedX = Math.max(-maxX, Math.min(maxX, randomX));
+        const clampedY = Math.max(-maxY, Math.min(maxY, randomY));
 
         noBtn.style.position = 'relative';
-        noBtn.style.left = randomX + 'px';
-        noBtn.style.top = randomY + 'px';
+        noBtn.style.left = clampedX + 'px';
+        noBtn.style.top = clampedY + 'px';
         noBtn.style.transition = 'all 0.3s ease';
 
         // Check if user has tried enough times
