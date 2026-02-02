@@ -465,12 +465,21 @@ body {
 
 /* Responsive Design */
 @media (max-width: 600px) {
+
+    /* Question page */
     .question {
-        font-size: 32px;
+        font-size: 28px;
+        line-height: 1.3;
     }
 
-    .thank-you {
-        font-size: 42px;
+    .emoji-header {
+        font-size: 60px;
+        margin-bottom: 15px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+        margin-bottom: 30px;
     }
 
     .btn {
@@ -478,8 +487,49 @@ body {
         font-size: 18px;
     }
 
-    .card,
+    .card {
+        padding: 30px 20px;
+    }
+
+    /* Message box */
+    .message-box {
+        top: -15px;
+        width: 95%;
+    }
+
+    .no-message {
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+
+    /* Celebration page */
     .celebration-card {
-        padding: 40px 25px;
+        padding: 30px 20px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .thank-you {
+        font-size: 32px;
+        margin-bottom: 15px;
+    }
+
+    .celebration-text {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .gif-container {
+        margin: 20px 0;
+    }
+
+    .celebration-gif {
+        max-width: 280px;
+        width: 100%;
+    }
+
+    .final-message {
+        font-size: 18px;
+        margin-top: 20px;
     }
 }
