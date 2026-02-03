@@ -463,6 +463,83 @@ body {
     z-index: 2;
 }
 
+.love-message {
+    font-size: 26px;
+    background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    margin-top: 20px;
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Celebration Blast Animations */
+@keyframes confettiBurst {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(calc(-50% + var(--x-vel)), calc(-50% + var(--y-vel))) scale(0.5) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes zoomInBlast {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) rotate(-10deg);
+    }
+
+    50% {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-10px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(10px);
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
 
@@ -531,5 +608,10 @@ body {
     .final-message {
         font-size: 18px;
         margin-top: 20px;
+    }
+
+    .love-message {
+        font-size: 20px;
+        margin-top: 15px;
     }
 }
