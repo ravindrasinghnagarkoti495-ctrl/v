@@ -2,10 +2,12 @@
 const urlParams = new URLSearchParams(window.location.search);
 const personName = urlParams.get('name');
 const personNameElement = document.getElementById('personName');
+const celebrationNameElement = document.getElementById('celebrationName');
 
 // Display personalized name if provided
 if (personName && personName.trim() !== '') {
     personNameElement.textContent = personName.trim() + ', ';
+    celebrationNameElement.textContent = personName.trim();
     // Update page title
     document.title = `💝 ${personName.trim()} 💝`;
 }
@@ -20,37 +22,41 @@ const celebrationContainer = document.getElementById('celebrationContainer');
 
 // Hover evasion mechanics
 let hoverAttempts = 0;
-const MAX_HOVER_ATTEMPTS = 10; // User must try 10 times before they can click
+const MAX_HOVER_ATTEMPTS = 12; // User must try 12 times before they can click
 let canClickNo = false;
 let yesBtnScale = 1;
 let noClickCount = 0;
 
 // Messages during hover evasion
 const hoverMessages = [
-    "Are you sure? 🥺",
-    "Really? Think again! 💭",
-    "Oops! The button moved! 🏃",
-    "Can't catch me! 😜",
-    "Still trying? How persistent! 😅",
-    "The No button is playing hard to get! 🎯",
-    "Keep trying... or just click Yes! 💕",
-    "Getting frustrated yet? 😈",
-    "Just a few more attempts... 🎲",
-    "Fine! You can click now! 😤"
+    "Pakka na? Soch lo! 🥺",
+    "Arre yaar, seriously? 💭",
+    "Oohoo Button bhaag gaya! 🏃",
+    "Pakad ke dikhao! 😜",
+    "Kitna try karoge? 😅",
+    "No button bhi sharma raha hai! 🎯",
+    "Thak gaye? Yes dabao na! 💕",
+    "Gussa aa raha hai kya? 😈",
+    "Haha! Miss ho gaya! 🎪",
+    "Bas kuch aur baar... 🎲",
+    "Arre yaar, give up karo! 😂",
+    "Theek hai, ab daba lo! 😤"
 ];
 
 // Messages when user clicks "No"
 const noClickMessages = [
-    "Please reconsider! 🙏",
-    "Don't break my heart! 💔",
-    "Give me a chance! 🌟",
-    "I promise to make you happy! 😊",
-    "Just say yes! Pretty please! 🥹",
-    "The Yes button is looking lonely! 👀",
-    "Come on, you can't resist! 💕",
-    "I'll be so sad if you say no! 😢",
-    "Yes is the only correct answer! ✨",
-    "Your heart is saying yes! ❤️"
+    "Ek baar aur soch lo please! 🙏",
+    "Dil tod diya yaar! 💔",
+    "Ek mauka toh do! 🌟",
+    "Promise, I will keep you happy! 😊",
+    "Please yaar, Yes bol do! 🥹",
+    "Yes button akela pad gaya! 👀",
+    "Chalo na yaar, maan jao! 💕",
+    "Itna bura lag raha hai kya? 😢",
+    "Mazak kar rahe ho kya? 🤔",
+    "Sahi jawab sirf Yes hai! ✨",
+    "Last chance hai ye! ⚠️",
+    "Dil se Yes aa raha hai! ❤️"
 ];
 
 // Show message in message box
@@ -131,12 +137,8 @@ noBtn.addEventListener('click', function (e) {
         return;
     }
 
-    // Show click message
-    if (noClickCount < noClickMessages.length) {
-        showMessage(noClickMessages[noClickCount]);
-    } else {
-        showMessage("Really? You're still saying no? 💔");
-    }
+    // Show click message (cycle through all 12 messages)
+    showMessage(noClickMessages[noClickCount % noClickMessages.length]);
 
     // Make "Yes" button bigger
     yesBtnScale += 0.2;
@@ -148,15 +150,14 @@ noBtn.addEventListener('click', function (e) {
     noBtn.style.transform = `scale(${newSize})`;
     noBtn.style.transition = 'transform 0.3s ease';
 
-    // After many clicks, make "No" button fade
-    if (noClickCount >= 5) {
+    // After many clicks, make "No" button fade (after 10 clicks)
+    if (noClickCount >= 10) {
         noBtn.style.opacity = '0.5';
-        showMessage("The No button is fading away! 👻");
     }
 
-    if (noClickCount >= 7) {
+    // After all messages shown, hide button (after 12 clicks)
+    if (noClickCount >= 12) {
         noBtn.style.display = 'none';
-        showMessage("No is no longer an option! Only YES! 💖");
     }
 
     noClickCount++;
@@ -164,18 +165,34 @@ noBtn.addEventListener('click', function (e) {
 
 // Handle "Yes" button click
 yesBtn.addEventListener('click', function () {
-    // Hide question container
-    questionContainer.classList.add('hidden');
+    // Add screen shake effect
+    document.body.style.animation = 'shake 0.5s';
 
-    // Show celebration container
-    celebrationContainer.classList.remove('hidden');
+    // Hide question container with fade
+    questionContainer.style.transition = 'all 0.5s ease';
+    questionContainer.style.opacity = '0';
+    questionContainer.style.transform = 'scale(0.8)';
 
-    // Create additional floating hearts
-    createFloatingHearts();
-
-    // Play celebration animation
     setTimeout(() => {
-        createConfetti();
+        questionContainer.classList.add('hidden');
+
+        // Show celebration container with zoom
+        celebrationContainer.classList.remove('hidden');
+        celebrationContainer.style.animation = 'zoomInBlast 0.8s ease-out';
+
+        // Immediate confetti blast!
+        createMassiveConfettiBurst();
+
+        // Create floating hearts
+        createFloatingHearts();
+
+        // Multiple waves of confetti
+        setTimeout(() => createConfetti(), 300);
+        setTimeout(() => createConfetti(), 600);
+        setTimeout(() => createConfetti(), 900);
+
+        // Extra heart burst
+        setTimeout(() => createFloatingHearts(), 500);
     }, 500);
 });
 
@@ -201,6 +218,44 @@ function createFloatingHearts() {
                 heart.remove();
             }, 6000);
         }, i * 200);
+    }
+}
+
+// Create massive confetti burst effect
+function createMassiveConfettiBurst() {
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7b731', '#5f27cd', '#00d2d3', '#ff69b4', '#ffd700'];
+    const confettiContainer = document.querySelector('.celebration-card');
+
+    // Create 200 confetti pieces for massive burst!
+    for (let i = 0; i < 200; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti-burst';
+        confetti.style.position = 'absolute';
+        confetti.style.width = (Math.random() * 15 + 5) + 'px';
+        confetti.style.height = (Math.random() * 15 + 5) + 'px';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = '50%';
+        confetti.style.top = '50%';
+        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+        confetti.style.zIndex = '9999';
+        confetti.style.pointerEvents = 'none';
+
+        // Random direction and velocity
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = Math.random() * 500 + 200;
+        const xVel = Math.cos(angle) * velocity;
+        const yVel = Math.sin(angle) * velocity;
+
+        confetti.style.setProperty('--x-vel', xVel + 'px');
+        confetti.style.setProperty('--y-vel', yVel + 'px');
+        confetti.style.animation = `confettiBurst ${Math.random() * 2 + 2}s ease-out forwards`;
+
+        confettiContainer.appendChild(confetti);
+
+        // Remove after animation
+        setTimeout(() => {
+            confetti.remove();
+        }, 4000);
     }
 }
 
